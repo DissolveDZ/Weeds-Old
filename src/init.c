@@ -3,7 +3,7 @@ void init()
     max_weeds = grid_x * grid_y;
     InitAudioDevice();
     InitWindow(window_width, window_height, Game_Name);
-    rander = GetRandomValue(0, 5);
+    rander = GetRandomValue(0, 6);
     switch (rander)
     {
     case 0:
@@ -24,6 +24,9 @@ void init()
     case 5:
         Game_Name = "who knows how long he has been sitting there";
         break;
+    case 6:
+        Game_Name = "i dont know if this is legal";
+        break;
     }
     SetWindowTitle(Game_Name);
     SetExitKey(-1);
@@ -31,19 +34,53 @@ void init()
     cursor2 = LoadTexture("resources/textures/cursor2.png");
     seed_bag_weed1 = LoadTexture("resources/textures/seed_bag_weed1.png");
     char *temp_text = malloc(strlen("resources/textures/weed.png") + 2);
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 6; i++)
     {
-        if (!i)
-            strcpy(temp_text, "resources/textures/weed.png");
-        else
-            strcpy(temp_text, TextFormat("resources/textures/weed%i.png", i));
+        strcpy(temp_text, TextFormat("resources/textures/weed%i.png", i + 1));
         printf("%s\n", temp_text);
         plant_stages[i] = LoadTexture(temp_text);
         plant_stages[i].width = 1;
         plant_stages[i].height = 1;
         plant_stage_len++;
     }
-    //free(temp_text);
+    free(temp_text);
+    for (int i = 0; i < 3; i++)
+    {
+        char *textes;
+        switch (i)
+        {
+        case 0:
+            textes = "resources/textures/dirt.png";
+            break;
+        case 1:
+            textes = "resources/textures/dirt_left.png";
+            break;
+        case 2:
+            textes = "resources/textures/dirt_right.png";
+        }
+        dirt[i] = LoadTexture(textes);
+        dirt[i].width = 1;
+        dirt[i].height = 1;
+        printf("%u\n", dirt[i]);
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        char *textes;
+        switch (i)
+        {
+        case 0:
+            textes = "resources/textures/dirt_dry.png";
+            break;
+        case 1:
+            textes = "resources/textures/dirt_dry_left.png";
+            break;
+        case 2:
+            textes = "resources/textures/dirt_dry_right.png";
+        }
+        dirt_dry[i] = LoadTexture(textes);
+        dirt_dry[i].width = 1;
+        dirt_dry[i].height = 1;
+    }
     weed_dry = LoadTexture("resources/textures/weed_dry.png");
     water_bucket = LoadTexture("resources/textures/water_bucket.png");
     shovel = LoadTexture("resources/textures/shovel.png");
@@ -76,7 +113,7 @@ void init()
     plant_message_displacement = LoadShader(0, "resources/shaders/warp.fs");
     camera.zoom = 200.f;
     music = LoadMusicStream("resources/sounds/35_Return_Trip.mp3");
-    SetMusicVolume(music, 0.1f);
+    SetMusicVolume(music, 0.25f);
     PlayMusicStream(music);
     seed = LoadTexture("resources/textures/seed.png");
     seed.width = 128;
@@ -97,7 +134,7 @@ void init()
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     SetTargetFPS(144);
-    weed_array = malloc(grid_x * sizeof(void *));
+    weed_array = malloc(grid_x * sizeof(Weed *));
     for (int o = 0; o < grid_x; o++)
     {
         weed_array[o] = malloc(grid_y * sizeof(Weed));

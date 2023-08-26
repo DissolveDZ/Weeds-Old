@@ -28,17 +28,28 @@ void draw()
     BeginMode2D(camera);
     for (int o = 0; o < grid_x; o++)
     {
+        bool left_plant = o != 0;
+        bool right_plant = o + 1 < grid_x;
         for (int i = 0; i < grid_y; i++)
         {
             Weed *cur_plant = &weed_array[o][i];
-            if (!cur_plant->watered && !cur_plant->auto_watering)
-                DrawTextureVI(plant_stages[7], cur_plant->pos, WHITE);
-            else if (cur_plant->watered)
-                DrawTextureVI(plant_stages[0], cur_plant->pos, WHITE);
-            if (cur_plant->type != DIRT)
+            int sides = 0;
+            if (left_plant && right_plant)
+                sides = 0;
+            else if (left_plant)
+                sides = 2;
+            else if (right_plant)
+                sides = 1;
+            if (cur_plant->watered)
+                DrawTextureVI(dirt[sides], cur_plant->pos, WHITE);
+            else
+                DrawTextureVI(dirt_dry[sides], cur_plant->pos, WHITE);
+
+            if (cur_plant->planted)
                 DrawTextureVI(cur_plant->texture, cur_plant->pos, WHITE);
         }
     }
+
     for (int o = 0; o < grid_x; o++)
     {
         for (int i = 0; i < grid_y; i++)
@@ -52,7 +63,7 @@ void draw()
             if (cur_plant->auto_harvest)
             {
                 float width = 0.5f;
-                DrawTextureEx(shovel, (Vector2){(float)cur_plant->pos.x + 1 - width + width/4, (float)cur_plant->pos.y - width / 4}, 0, width, WHITE);
+                DrawTextureEx(shovel, (Vector2){(float)cur_plant->pos.x + 1 - width + width / 4, (float)cur_plant->pos.y - width / 4}, 0, width, WHITE);
             }
             if (cur_plant->warning && cur_plant->planted)
             {
@@ -92,8 +103,6 @@ void draw()
     }
 
     DrawTexture(seed, seed_pos.x + 25, seed_pos.y, WHITE);
-    // DrawTexture(weed_texture, 200, window_height * .035 - weed_texture.height / 4, WHITE);
-
     if (menu != CLOSED && menu != SELECT)
     {
         DrawRectangleRec((Rectangle){0, 0, window_width, window_height}, (Color){0, 0, 0, 125});
@@ -107,7 +116,7 @@ void draw()
     RenderUI();
     DrawAmount();
     DrawTextEx(pixelfont, TextFormat("money: %i$ ", display_weeds), (Vector2){20, window_height * .035}, 50, 0.0f, BLACK);
-    DrawTextEx(pixelfont, TextFormat("%i: ", seeds), (Vector2){window_width-upgrade_button->rec.width-100 - MeasureTextEx(pixelfont, TextFormat("%i: ", seeds), 50, 0.f).x, window_height * .035}, 50, 0.f, BLACK);
+    DrawTextEx(pixelfont, TextFormat("%i: ", seeds), (Vector2){window_width - upgrade_button->rec.width - 100 - MeasureTextEx(pixelfont, TextFormat("%i: ", seeds), 50, 0.f).x, window_height * .035}, 50, 0.f, BLACK);
     int oclock = (int){day_time * 24 / 120 + 1};
     if (oclock > 24)
     {

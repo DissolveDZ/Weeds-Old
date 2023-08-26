@@ -49,7 +49,6 @@ Menu menu;
 
 typedef enum Weed_Types
 {
-    DIRT,
     PLANTED,
     SAPLING,
     GROW1,
@@ -98,6 +97,7 @@ static inline void DrawTextureVI(Texture2D texture, Vector2I pos, Color tint)
 }
 
 Shader plant_message_displacement;
+Shader background;
 RenderTexture2D plant_messages_rendertexture;
 
 int window_width = 1920;
@@ -119,7 +119,8 @@ char *plant_messages[] =
         "finally..",
         "great job!?!?",
         "just a bit longer..",
-        "is this what I'm supposed to do?"};
+        "is this what I'm supposed to do?",
+        "i wonder how my familay is feeling... are they misssing me? its been so long..."};
 Text *plant_message_array;
 Color upgrades_rec_color;
 Color cursor_color = WHITE;
@@ -127,7 +128,9 @@ Color cursor_color = WHITE;
 Texture2D cursor1;
 Texture2D cursor2;
 Texture2D cursor_texture;
-Texture2D plant_stages[8];
+Texture2D plant_stages[6];
+Texture2D dirt[3];
+Texture2D dirt_dry[3];
 Texture2D warning;
 Texture2D weed_dry;
 Texture2D background_texture;
@@ -370,13 +373,12 @@ void PlaySoundMulti(MultiSound *sound)
 void InitPlant(Weed *weed)
 {
     weed->pos = (Vector2I){0, 0};
-    weed->type = DIRT;
     weed->time = 0;
     weed->last_watered = 0;
     weed->planted = false;
-    weed->watered = false;
     weed->auto_watering = false;
     weed->auto_harvest = false;
+    weed->watered = false;
     weed->warning = false;
     weed->value = 1;
 }
@@ -606,8 +608,6 @@ void UpdatePlants()
             if (cur_plant->planted)
             {
                 cur_plant->pos = (Vector2I){i, o};
-                // if (!cur_plant->watered)
-                // cur_plant->time = global_time;
                 cur_plant->warning = false;
                 if ((global_time - cur_plant->time) * decay_speed <= 1)
                     cur_plant->type = PLANTED;
@@ -628,7 +628,13 @@ void UpdatePlants()
                 if ((global_time - cur_plant->last_watered) * water_need > 1.f && !cur_plant->auto_watering)
                     cur_plant->type = DED;
             }
-            if (!cur_plant->planted && cur_plant->auto_harvest && seeds > 0)
+            if (!cur_plant->watered && cur_plant->auto_watering && seeds)
+            {
+                PlaySoundMulti(&water_sound);
+                cur_plant->last_watered = global_time;
+                cur_plant->watered = true;
+            }
+            if (!cur_plant->planted && cur_plant->auto_harvest && seeds)
             {
                 PlaySoundMulti(&plant_sound);
                 seeds -= 1;
@@ -636,32 +642,27 @@ void UpdatePlants()
                 cur_plant->time = global_time;
                 cur_plant->last_watered = global_time;
                 cur_plant->watered = false;
+                cur_plant->type = PLANTED;
             }
             if (cur_plant->type == GROWN && cur_plant->auto_harvest)
             {
                 PlaySoundMulti(&dig_sound);
+                cur_plant->type = PLANTED;
                 cur_plant->planted = false;
+                cur_plant->watered = false;
                 weeds += cur_plant->value;
             }
             if (!cur_plant->planted)
             {
                 cur_plant->pos = (Vector2I){i, o};
-                cur_plant->type = DIRT;
                 cur_plant->time = 0;
             }
             if (cur_plant->type == DED)
             {
-                cur_plant->type = DIRT;
                 cur_plant->planted = false;
             }
-            else
+            else if (cur_plant->type < DED)
                 cur_plant->texture = plant_stages[(int)cur_plant->type];
-            if (!cur_plant->watered && cur_plant->auto_watering)
-            {
-                PlaySoundMulti(&water_sound);
-                cur_plant->last_watered = global_time;
-                cur_plant->watered = true;
-            }
         }
     }
 }
