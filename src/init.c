@@ -46,6 +46,9 @@ void init()
     weed_dry = LoadTexture("resources/textures/weed_dry.png");
     water_bucket = LoadTexture("resources/textures/water_bucket.png");
     shovel = LoadTexture("resources/textures/shovel.png");
+    warning = LoadTexture("resources/textures/warning.png");
+    warning.width = 1;
+    warning.height = 1;
     water_bucket.width = 1;
     water_bucket.height = 1;
     shovel.width = 1;

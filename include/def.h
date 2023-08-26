@@ -56,7 +56,6 @@ typedef enum Weed_Types
     GROW2,
     GROW3,
     GROWN,
-    DRY,
     DED
 } Weed_Types;
 
@@ -66,6 +65,7 @@ typedef struct Weed
     Texture texture;
     Vector2I pos;
     bool watered;
+    bool warning;
     bool planted;
     bool auto_watering;
     bool auto_harvest;
@@ -128,6 +128,7 @@ Texture2D cursor1;
 Texture2D cursor2;
 Texture2D cursor_texture;
 Texture2D plant_stages[8];
+Texture2D warning;
 Texture2D weed_dry;
 Texture2D background_texture;
 Texture2D seed_bag_weed1;
@@ -375,6 +376,7 @@ void InitPlant(Weed *weed)
     weed->planted = false;
     weed->auto_watering = false;
     weed->auto_harvest = false;
+    weed->warning = false;
     weed->value = 1;
 }
 
@@ -603,6 +605,9 @@ void UpdatePlants()
             if (cur_plant->planted)
             {
                 cur_plant->pos = (Vector2I){i, o};
+                // if (!cur_plant->watered)
+                // cur_plant->time = global_time;
+                cur_plant->warning = false;
                 if ((global_time - cur_plant->time) * decay_speed <= 1)
                     cur_plant->type = PLANTED;
                 else if ((global_time - cur_plant->time) * decay_speed <= 2)
@@ -618,6 +623,8 @@ void UpdatePlants()
                 if ((global_time - cur_plant->last_watered) * water_need > 0.5f)
                     cur_plant->watered = false;
                 if ((global_time - cur_plant->last_watered) * water_need > 0.75f && !cur_plant->auto_watering)
+                    cur_plant->warning = true;
+                if ((global_time - cur_plant->last_watered) * water_need > 1.f && !cur_plant->auto_watering)
                     cur_plant->type = DED;
             }
             if (!cur_plant->planted && cur_plant->auto_harvest && seeds > 0)
@@ -627,7 +634,7 @@ void UpdatePlants()
                 cur_plant->planted = true;
                 cur_plant->time = global_time;
                 cur_plant->last_watered = global_time;
-                cur_plant->watered = true;
+                cur_plant->watered = false;
             }
             if (cur_plant->type == GROWN && cur_plant->auto_harvest)
             {
@@ -648,8 +655,8 @@ void UpdatePlants()
             }
             else
                 cur_plant->texture = plant_stages[(int)cur_plant->type];
-            //if (!cur_plant->watered && cur_plant->planted && !cur_plant->auto_watering)
-                //cur_plant->texture = weed_dry;
+            // if (!cur_plant->watered && cur_plant->planted && !cur_plant->auto_watering)
+            // cur_plant->texture = weed_dry;
             if (!cur_plant->watered && cur_plant->auto_watering)
             {
                 PlaySoundMulti(&water_sound);
