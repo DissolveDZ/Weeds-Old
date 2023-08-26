@@ -314,7 +314,7 @@ void FormatUIFloat(UI *ui, char *type, int var)
 
 void Resize()
 {
-    Image VerticalGradient = GenImageGradientLinear(window_width, window_height, -1, (Color){150, 200, 255, 255}, (Color){0, 121 - 50, 241 - 100, 255});
+    Image VerticalGradient = GenImageGradientLinear(window_width, window_height, -1, (Color){0, 121 - 50, 241 - 100, 255}, (Color){150, 200, 255, 255});
     background_texture = LoadTextureFromImage(VerticalGradient);
     plant_messages_rendertexture = LoadRenderTexture(window_width, window_height);
     seed_pos = (Vector2){upgrade_button->rec.x - 150, window_height * .035 - seed.height / 4};
