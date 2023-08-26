@@ -52,7 +52,7 @@ Plant(Vector2I position)
                     plant_message_array = realloc(plant_message_array, sizeof(Text) * max_plant_messages);
                 }
                 plant_message_array[cur_plant_messages_on_screen - 1].position = ((Vector2){GetRandomValue(0, window_width), GetRandomValue(0, window_height)});
-                plant_message_array[cur_plant_messages_on_screen - 1].random = GetRandomValue(0, 8);
+                plant_message_array[cur_plant_messages_on_screen - 1].random = GetRandomValue(0, 9-1);
                 plant_message_array[cur_plant_messages_on_screen - 1].velocity.y = GetRandomValue(1, 50);
                 plant_message_array[cur_plant_messages_on_screen - 1].size = GetRandomValue(20, 60);
                 plant_message_array[cur_plant_messages_on_screen - 1].lifetime = 0;

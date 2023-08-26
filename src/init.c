@@ -26,6 +26,7 @@ void init()
         break;
     }
     SetWindowTitle(Game_Name);
+    SetExitKey(-1);
     cursor1 = LoadTexture("resources/textures/cursor1.png");
     cursor2 = LoadTexture("resources/textures/cursor2.png");
     dirt_texture = LoadTexture("resources/textures/dirt.png");
@@ -85,7 +86,7 @@ void init()
     seed.height = 64;
     upgrades_rec_color = (Color){127, 106, 79, 125};
     seeds = 20;
-    weeds = 10000;
+    weeds = 1000;
     menu = CLOSED;
     upgrade_button = CreateUIElement(1575, 20, 325, 64, "upgrades", upgrades_rec_color, BLACK, NONE);
     buy_seeds = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 400, 400, 100, "Buy seeds: ", upgrades_rec_color, RED, FARM, 1, 1, "You need to buy seeds\n\n\n else you might go broke", false);
