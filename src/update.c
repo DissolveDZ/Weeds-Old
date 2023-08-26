@@ -309,8 +309,6 @@ void update()
             cursor_pos.y = 0;
         last_cursor_pos = cursor_pos;
         Weed *cur_weed = &weed_array[cursor_pos.x][cursor_pos.y];
-        if (cur_weed->watered)
-            printf("NO");
         switch (active_selected)
         {
         case AUTOWATER:

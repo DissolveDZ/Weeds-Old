@@ -52,7 +52,7 @@ void draw()
             if (cur_plant->auto_harvest)
             {
                 float width = 0.5f;
-                DrawTextureEx(shovel, (Vector2){(float)cur_plant->pos.x + 1 - width / 2, (float)cur_plant->pos.y - width / 4}, 0, width, WHITE);
+                DrawTextureEx(shovel, (Vector2){(float)cur_plant->pos.x + 1 - width + width/4, (float)cur_plant->pos.y - width / 4}, 0, width, WHITE);
             }
             if (cur_plant->warning && cur_plant->planted)
             {

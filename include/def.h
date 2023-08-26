@@ -656,8 +656,6 @@ void UpdatePlants()
             }
             else
                 cur_plant->texture = plant_stages[(int)cur_plant->type];
-            // if (!cur_plant->watered && cur_plant->planted && !cur_plant->auto_watering)
-            // cur_plant->texture = weed_dry;
             if (!cur_plant->watered && cur_plant->auto_watering)
             {
                 PlaySoundMulti(&water_sound);

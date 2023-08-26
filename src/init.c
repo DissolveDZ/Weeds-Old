@@ -76,7 +76,7 @@ void init()
     plant_message_displacement = LoadShader(0, "resources/shaders/warp.fs");
     camera.zoom = 200.f;
     music = LoadMusicStream("resources/sounds/35_Return_Trip.mp3");
-    SetMusicVolume(music, 0.25f);
+    SetMusicVolume(music, 0.1f);
     PlayMusicStream(music);
     seed = LoadTexture("resources/textures/seed.png");
     seed.width = 128;
