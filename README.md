@@ -5,4 +5,6 @@ I do NOT own any of the music/sounds used, nor am I profiting from this project.
 
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/a8f9847e-0464-4ece-bff5-4f22556ef703)
 
-![image](https://github.com/DissolveDZ/Weeds/assets/68782699/236542de-e2d3-473e-9b7d-f9fc07785223)
+![image](https://github.com/DissolveDZ/Weeds/assets/68782699/49f1f4ac-2dce-4aed-8a46-eba0d0cf9306)
+
+![image](https://github.com/DissolveDZ/Weeds/assets/68782699/f581e500-f467-4f7c-bf21-f3a4472a0270)
