@@ -104,9 +104,10 @@ int window_width = 1920;
 int window_height = 1080;
 int rander = 0;
 char *Game_Name = "";
-int max_plant_messages = 20;
-int max_plant_messages_on_screen = 20;
-int cur_plant_messages_on_screen = 0;
+unsigned int plant_stage_len = 0;
+unsigned int max_plant_messages = 20;
+unsigned int max_plant_messages_on_screen = 20;
+unsigned int cur_plant_messages_on_screen = 0;
 bool hover_ui = false;
 char *plant_messages[] =
     {
@@ -118,8 +119,7 @@ char *plant_messages[] =
         "finally..",
         "great job!?!?",
         "just a bit longer..",
-        "is this what I'm supposed to do?"
-};
+        "is this what I'm supposed to do?"};
 Text *plant_message_array;
 Color upgrades_rec_color;
 Color cursor_color = WHITE;
@@ -127,14 +127,8 @@ Color cursor_color = WHITE;
 Texture2D cursor1;
 Texture2D cursor2;
 Texture2D cursor_texture;
-Texture2D dirt_texture;
-Texture2D weed_planted;
-Texture2D weed_sapling;
-Texture2D weed_grow1;
-Texture2D weed_grow2;
-Texture2D weed_grow3;
+Texture2D plant_stages[8];
 Texture2D weed_dry;
-Texture2D weed_texture;
 Texture2D background_texture;
 Texture2D seed_bag_weed1;
 Texture2D water_bucket;
@@ -164,13 +158,16 @@ MultiSound plant_sound;
 MultiSound dig_sound;
 MultiSound water_sound;
 MultiSound cash_sound;
-Vector2 shop_slide_offset;
-Vector2 mouse_pos;
-Vector2I cursor_pos = {0, 0};
-Vector2I last_cursor_pos;
+Vector2 src_resolution = {1920, 1080};
+Vector2 shop_slide_offset = {0};
+Vector2 mouse_pos = {0};
+Vector2 seed_pos = {0};
+Vector2I cursor_pos = {0};
+Vector2I last_cursor_pos = {0};
 float frame_time;
 float time_passed;
 bool toggle_cursor = false;
+bool fullscreen = false;
 Texture2D seed;
 
 Font pixelfont;
@@ -190,15 +187,15 @@ typedef struct UI
 typedef struct Buy_Button
 {
     UI **ui;
-    int cost;
-    int amount;
+    float cost;
+    unsigned int amount;
     char *tooltip;
     bool select_plant;
 } Buy_Button;
 
 UI *UI_array;
-int UI_len = 0;
-int UI_max = 50;
+unsigned int UI_len = 0;
+unsigned int UI_max = 50;
 
 UI *upgrade_button;
 
@@ -297,7 +294,6 @@ void FormatUI(UI *ui, char *type, const char *text)
         ui->display_text = realloc(ui->display_text, len);
     else if (TextLength(ui->display_text) + 1 < len)
         ui->display_text = realloc(ui->display_text, len);
-    // memcpy(ui->display_text, ui->text, TextLength(ui->text));
     strcpy(ui->display_text, ui->text);
     ui->format = true;
 }
@@ -306,7 +302,6 @@ void FormatUIInt(UI *ui, char *type, int val)
 {
     const char *text = TextFormat(type, val);
     FormatUI(ui, type, text);
-    // snprintf(ui->display_text)
     strcat(ui->display_text, text);
 }
 
@@ -321,12 +316,12 @@ void Resize()
     Image VerticalGradient = GenImageGradientLinear(window_width, window_height, -1, (Color){150, 200, 255, 255}, (Color){0, 121 - 50, 241 - 100, 255});
     background_texture = LoadTextureFromImage(VerticalGradient);
     plant_messages_rendertexture = LoadRenderTexture(window_width, window_height);
+    seed_pos = (Vector2){upgrade_button->rec.x - 150, window_height * .035 - seed.height / 4};
     float screenSize[2] = {(float)window_width, (float)window_height};
     if (window_width != 0 && window_height != 0)
         SetShaderValue(plant_message_displacement, GetShaderLocation(plant_message_displacement, "size"), &screenSize, SHADER_UNIFORM_VEC2);
     camera.target = (Vector2){grid_x / 2, grid_y / 2};
     camera.offset = (Vector2){window_width / 2, window_height / 2};
-    // camera.offset = (Vector2){camera.target.x, camera.target.y};
 }
 
 Sound **sound_array;
@@ -405,6 +400,9 @@ int AmountLookup(int amount, bool dir)
         switch (amount)
         {
         case 1:
+            new_amount = 2;
+            break;
+        case 2:
             new_amount = 5;
             break;
         case 5:
@@ -438,8 +436,11 @@ int AmountLookup(int amount, bool dir)
     {
         switch (amount)
         {
-        case 5:
+        case 2:
             new_amount = 1;
+            break;
+        case 5:
+            new_amount = 2;
             break;
         case 10:
             new_amount = 5;
@@ -477,7 +478,7 @@ void UpdateBuyButtons()
     {
         Buy_Button *cur_button = &buy_buttons[i];
         int amount = cur_button->amount ? cur_button->amount : 1;
-        if (cur_button->cost * amount <= weeds)
+        if (cur_button->cost * amount <= weeds && 1 <= floorf(cur_button->cost * amount))
         {
             cur_button->ui[0]->text_color = BLACK;
             if (cur_button->amount)
@@ -511,7 +512,7 @@ void UpdateBuyButtons()
 bool Buy(Buy_Button *button)
 {
     int amount = button->amount ? button->amount : 1;
-    if (weeds >= button->cost * amount)
+    if (weeds >= button->cost * amount && 1 <= floorf(button->cost * amount))
     {
         PlaySoundMulti(&cash_sound);
         weeds -= button->cost * amount;
@@ -531,8 +532,8 @@ typedef enum Selectables
 } Selectables;
 Selectables active_selected;
 
-// Create a UI element which will be returned as a pointer
-Buy_Button *CreateBuyButton(float x, float y, float width, float height, char *text, Color rec_color, Color text_color, Menu menu, int cost, int amount, char *tooltip, bool select_plant)
+// Create a Buy button which will be returned as a pointer
+Buy_Button *CreateBuyButton(float x, float y, float width, float height, char *text, Color rec_color, Color text_color, Menu menu, float cost, int amount, char *tooltip, bool select_plant)
 {
     Buy_Button *button = {0};
     if (buy_buttons_len == 0)
@@ -574,9 +575,10 @@ void DrawAmount()
         if ((menu != cur_button->ui[0]->menu) || !cur_button->amount)
             continue;
         const char *text = TextFormat("%i", cur_button->amount);
-        float text_size = 40.f;
+        float text_size = 50.f;
         Vector2 text_len = MeasureTextEx(pixelfont, text, text_size, 0.f);
-        DrawTextEx(pixelfont, text, (Vector2){cur_button->ui[0]->rec.x + cur_button->ui[0]->rec.width + 60 - text_len.x / 2, cur_button->ui[0]->rec.y + cur_button->ui[0]->rec.height / 4 - 10 + text_len.y / 2}, text_size, 0.f, cur_button->ui[0]->text_color);
+        Vector2 dist = (Vector2){(cur_button->ui[1]->rec.x - cur_button->ui[0]->rec.x) + cur_button->ui[0]->rec.x - cur_button->ui[1]->rec.width / 2, cur_button->ui[0]->rec.y + cur_button->ui[0]->rec.height / 2}; //(Vector2){(cur_button->ui[1]->rec.x - cur_button->ui[0]->rec.x)/2 + cur_button->ui[0]->rec.x - cur_button->ui[1]->rec.width/2, cur_button->ui[1]->rec.y + cur_button->ui[1]->rec.height};
+        DrawTextEx(pixelfont, text, (Vector2){dist.x - text_len.x / 2, dist.y - text_len.y / 2}, text_size, 0.f, cur_button->ui[0]->text_color);
     }
 }
 
@@ -639,39 +641,15 @@ void UpdatePlants()
                 cur_plant->type = DIRT;
                 cur_plant->time = 0;
             }
-            switch (cur_plant->type)
+            if (cur_plant->type == DED)
             {
-            case DIRT:
-                cur_plant->texture = dirt_texture;
-                break;
-            case PLANTED:
-                cur_plant->texture = weed_planted;
-                break;
-            case SAPLING:
-                cur_plant->texture = weed_sapling;
-                break;
-            case GROW1:
-                cur_plant->texture = weed_grow1;
-                break;
-            case GROW2:
-                cur_plant->texture = weed_grow2;
-                break;
-            case GROW3:
-                cur_plant->texture = weed_grow3;
-                break;
-            case GROWN:
-                cur_plant->texture = weed_texture;
-                break;
-            case DED:
-                cur_plant->texture = dirt_texture;
                 cur_plant->type = DIRT;
                 cur_plant->planted = false;
-                break;
-            default:
-                break;
             }
-            if (!cur_plant->watered && cur_plant->planted && !cur_plant->auto_watering)
-                cur_plant->texture = weed_dry;
+            else
+                cur_plant->texture = plant_stages[(int)cur_plant->type];
+            //if (!cur_plant->watered && cur_plant->planted && !cur_plant->auto_watering)
+                //cur_plant->texture = weed_dry;
             if (!cur_plant->watered && cur_plant->auto_watering)
             {
                 PlaySoundMulti(&water_sound);
@@ -682,31 +660,7 @@ void UpdatePlants()
     }
 }
 
-vectorDotProduct(Vector2 pt1, Vector2 pt2)
-{
-    return (pt1.x * pt2.x) + (pt1.y * pt2.y);
-}
-
 float GetTextMiddle(char *text, int size, Font font, float spacing)
 {
     return MeasureTextEx(font, text, size, spacing).x / 2;
-}
-
-Vector2 GetRecVerts(Rectangle rec, int index)
-{
-    switch (index)
-    {
-    case 0:
-        return (Vector2){rec.x, rec.y};
-        break;
-    case 1:
-        return (Vector2){rec.x + rec.width, rec.y};
-        break;
-    case 2:
-        return (Vector2){rec.x + rec.width, rec.y + rec.height};
-        break;
-    case 3:
-        return (Vector2){rec.x, rec.y + rec.height};
-        break;
-    }
 }
