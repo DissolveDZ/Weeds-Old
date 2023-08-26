@@ -30,19 +30,20 @@ void init()
     cursor1 = LoadTexture("resources/textures/cursor1.png");
     cursor2 = LoadTexture("resources/textures/cursor2.png");
     seed_bag_weed1 = LoadTexture("resources/textures/seed_bag_weed1.png");
-    char *text = malloc(strlen("resources/textures/weed.png") + 1);
+    char *temp_text = malloc(strlen("resources/textures/weed.png") + 2);
     for (int i = 0; i < 8; i++)
     {
         if (!i)
-            strcpy(text, "resources/textures/weed.png");
+            strcpy(temp_text, "resources/textures/weed.png");
         else
-            strcpy(text, TextFormat("resources/textures/weed%i.png", i));
-        printf("%s\n", text);
-        plant_stages[i] = LoadTexture(text);
+            strcpy(temp_text, TextFormat("resources/textures/weed%i.png", i));
+        printf("%s\n", temp_text);
+        plant_stages[i] = LoadTexture(temp_text);
         plant_stages[i].width = 1;
         plant_stages[i].height = 1;
         plant_stage_len++;
     }
+    free(temp_text);
     weed_dry = LoadTexture("resources/textures/weed_dry.png");
     water_bucket = LoadTexture("resources/textures/water_bucket.png");
     shovel = LoadTexture("resources/textures/shovel.png");
