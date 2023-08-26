@@ -112,13 +112,13 @@ char *plant_messages[] =
     {
         "planted!",
         "mission completed return to HQ",
-        "I don't feel so good O)v(o",
+        "I don't feel so good..",
         "very nice!",
         "yuy!",
         "finally..",
         "great job!?!?",
-        "ich frage mich was PAY davon denkt",
-        "nur noch ein bisschen",
+        "just a bit longer..",
+        "is this what I'm supposed to do?"
 };
 Text *plant_message_array;
 Color upgrades_rec_color;
