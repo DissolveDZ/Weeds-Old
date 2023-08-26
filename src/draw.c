@@ -31,6 +31,10 @@ void draw()
         for (int i = 0; i < grid_y; i++)
         {
             Weed *cur_plant = &weed_array[o][i];
+            if (!cur_plant->watered && !cur_plant->auto_watering)
+                DrawTextureVI(plant_stages[7], cur_plant->pos, WHITE);
+            else if (cur_plant->planted)
+                DrawTextureVI(plant_stages[0], cur_plant->pos, WHITE);
             DrawTextureVI(cur_plant->texture, cur_plant->pos, WHITE);
             if (cur_plant->auto_watering)
             {
@@ -75,8 +79,8 @@ void draw()
         EndShaderMode();
     }
 
-    DrawTexture(seed,seed_pos.x, seed_pos.y, WHITE);
-    //DrawTexture(weed_texture, 200, window_height * .035 - weed_texture.height / 4, WHITE);
+    DrawTexture(seed, seed_pos.x, seed_pos.y, WHITE);
+    // DrawTexture(weed_texture, 200, window_height * .035 - weed_texture.height / 4, WHITE);
 
     if (menu != CLOSED && menu != SELECT)
     {
@@ -90,8 +94,8 @@ void draw()
 
     RenderUI();
     DrawAmount();
-    DrawText(TextFormat("money: %i$ ", display_weeds), 200 - MeasureText(TextFormat("money: %i$ ", display_weeds), 50) / 2, window_height * .035, 50, BLACK);
-    DrawText(TextFormat("%i: ", seeds), seed_pos.x - 35 - MeasureText(TextFormat("%i: ", seeds), 50) / 2, window_height * .035, 50, BLACK);
+    DrawText(TextFormat("money: %i$ ", display_weeds), 20, window_height * .035, 50, BLACK);
+    DrawText(TextFormat("%i: ", seeds), seed_pos.x - MeasureText(TextFormat("%i: ", seeds), 50), window_height * .035, 50, BLACK);
     int oclock = (int){day_time * 24 / 120 + 1};
     if (oclock > 24)
     {

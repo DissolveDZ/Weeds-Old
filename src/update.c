@@ -82,10 +82,10 @@ void MoneyAnimation()
 {
     // display_weeds = (int)Lerp((float)display_weeds, (float)weeds, 0.1f);
     if (display_weeds < weeds)
-        display_weeds += (int)(10.f * frame_time);
+        display_weeds += 1; //(int)(10.f * frame_time);
     else if (display_weeds > weeds)
-        display_weeds -= (int)(10.f * frame_time);
-    display_weeds = weeds;
+        display_weeds -= 1; //(int)(10.f * frame_time);
+    // display_weeds = weeds;
 }
 
 void CameraMovement()
@@ -261,7 +261,22 @@ void update()
         }
 
         if (IsKeyPressed(KEY_F11))
+        {
+            /*
+            fullscreen = !fullscreen;
+            int display = GetCurrentMonitor();
+            if (fullscreen)
+                SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display));
+            else
+                SetWindowSize(src_resolution.x, src_resolution.y);
+            ResizeUI(window_width, window_height);
+            window_width = GetScreenWidth();
+            window_height = GetScreenHeight();
+            Resize();
+            SetWindowState(FLAG_FULLSCREEN_MODE);
+            */
             ToggleFullscreen();
+        }
         if (IsKeyPressed(KEY_ENTER))
         {
             Plant(cursor_pos);
