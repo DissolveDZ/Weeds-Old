@@ -75,8 +75,8 @@ void draw()
         EndShaderMode();
     }
 
-    DrawTexture(seed, window_width - 500, window_height * .035 - seed.height / 4, WHITE);
-    DrawTexture(weed_texture, 200, window_height * .035 - weed_texture.height / 4, WHITE);
+    DrawTexture(seed,seed_pos.x, seed_pos.y, WHITE);
+    //DrawTexture(weed_texture, 200, window_height * .035 - weed_texture.height / 4, WHITE);
 
     if (menu != CLOSED && menu != SELECT)
     {
@@ -91,7 +91,7 @@ void draw()
     RenderUI();
     DrawAmount();
     DrawText(TextFormat("money: %i$ ", display_weeds), 200 - MeasureText(TextFormat("money: %i$ ", display_weeds), 50) / 2, window_height * .035, 50, BLACK);
-    DrawText(TextFormat("%i: ", seeds), window_width - 550 - MeasureText(TextFormat("%i: ", seeds), 50) / 2, window_height * .035, 50, BLACK);
+    DrawText(TextFormat("%i: ", seeds), seed_pos.x - 35 - MeasureText(TextFormat("%i: ", seeds), 50) / 2, window_height * .035, 50, BLACK);
     int oclock = (int){day_time * 24 / 120 + 1};
     if (oclock > 24)
     {

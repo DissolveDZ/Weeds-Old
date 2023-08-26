@@ -52,7 +52,7 @@ Plant(Vector2I position)
                     plant_message_array = realloc(plant_message_array, sizeof(Text) * max_plant_messages);
                 }
                 plant_message_array[cur_plant_messages_on_screen - 1].position = ((Vector2){GetRandomValue(0, window_width), GetRandomValue(0, window_height)});
-                plant_message_array[cur_plant_messages_on_screen - 1].random = GetRandomValue(0, 9-1);
+                plant_message_array[cur_plant_messages_on_screen - 1].random = GetRandomValue(0, 9 - 1);
                 plant_message_array[cur_plant_messages_on_screen - 1].velocity.y = GetRandomValue(1, 50);
                 plant_message_array[cur_plant_messages_on_screen - 1].size = GetRandomValue(20, 60);
                 plant_message_array[cur_plant_messages_on_screen - 1].lifetime = 0;
@@ -122,7 +122,7 @@ void ProcessButtons()
     }
     if (buy_seeds->ui[0]->pressed && Buy(buy_seeds))
     {
-        seeds += buy_seeds->amount * 2;
+        seeds += buy_seeds->amount;
     }
     if (buy_auto_water->ui[0]->pressed)
     {
@@ -139,7 +139,7 @@ void ProcessButtons()
         active_selected = MOREVALUE;
         menu = SELECT;
     }
-    if (buy_time->ui[0]->pressed)
+    if (buy_time->ui[0]->pressed && Buy(buy_time))
     {
         for (int i = 0; i < buy_time->amount; i++)
         {
@@ -247,14 +247,14 @@ void update()
             Vector2I rounded_click = (Vector2I){floorf(temp.x), floorf(temp.y)};
             cursor_pos.x = rounded_click.x;
             cursor_pos.y = rounded_click.y;
-            if (rounded_click.x < 0)
-                cursor_pos.x = 0;
             if (rounded_click.x > grid_x - 1)
                 cursor_pos.x = grid_x - 1;
-            if (rounded_click.y < 0)
-                cursor_pos.y = 0;
+            if (rounded_click.x <= 0)
+                cursor_pos.x = 0;
             if (rounded_click.y > grid_y - 1)
                 cursor_pos.y = grid_y - 1;
+            if (rounded_click.y <= 0)
+                cursor_pos.y = 0;
             if (last_cursor_pos.x == cursor_pos.x && last_cursor_pos.y == cursor_pos.y)
                 Plant(cursor_pos);
             last_cursor_pos = cursor_pos;
@@ -281,14 +281,14 @@ void update()
         Vector2I rounded_click = (Vector2I){floorf(temp.x), floorf(temp.y)};
         cursor_pos.x = rounded_click.x;
         cursor_pos.y = rounded_click.y;
-        if (rounded_click.x < 0)
-            cursor_pos.x = 0;
         if (rounded_click.x > grid_x - 1)
             cursor_pos.x = grid_x - 1;
-        if (rounded_click.y < 0)
-            cursor_pos.y = 0;
+        if (rounded_click.x <= 0)
+            cursor_pos.x = 0;
         if (rounded_click.y > grid_y - 1)
             cursor_pos.y = grid_y - 1;
+        if (rounded_click.y <= 0)
+            cursor_pos.y = 0;
         last_cursor_pos = cursor_pos;
         Weed *cur_weed = &weed_array[cursor_pos.x][cursor_pos.y];
         switch (active_selected)

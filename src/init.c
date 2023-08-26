@@ -29,43 +29,35 @@ void init()
     SetExitKey(-1);
     cursor1 = LoadTexture("resources/textures/cursor1.png");
     cursor2 = LoadTexture("resources/textures/cursor2.png");
-    dirt_texture = LoadTexture("resources/textures/dirt.png");
     seed_bag_weed1 = LoadTexture("resources/textures/seed_bag_weed1.png");
-    weed_planted = LoadTexture("resources/textures/weed_planted.png");
-    weed_sapling = LoadTexture("resources/textures/weed_sapling.png");
-    weed_grow1 = LoadTexture("resources/textures/weed_grow1.png");
-    weed_grow2 = LoadTexture("resources/textures/weed_grow2.png");
-    weed_grow3 = LoadTexture("resources/textures/weed_grow3.png");
+    char *text = malloc(strlen("resources/textures/weed.png") + 1);
+    for (int i = 0; i < 7; i++)
+    {
+        if (!i)
+            strcpy(text, "resources/textures/weed.png");
+        else
+            strcpy(text, TextFormat("resources/textures/weed%i.png", i));
+        printf("%s\n", text);
+        plant_stages[i] = LoadTexture(text);
+        plant_stages[i].width = 1;
+        plant_stages[i].height = 1;
+        plant_stage_len++;
+    }
     weed_dry = LoadTexture("resources/textures/weed_dry.png");
-    weed_texture = LoadTexture("resources/textures/weed.png");
     water_bucket = LoadTexture("resources/textures/water_bucket.png");
     shovel = LoadTexture("resources/textures/shovel.png");
     water_bucket.width = 1;
     water_bucket.height = 1;
     shovel.width = 1;
     shovel.height = 1;
-    weed_planted.width = 1;
-    weed_planted.height = 1;
-    weed_sapling.width = 1;
-    weed_sapling.height = 1;
-    weed_grow1.width = 1;
-    weed_grow1.height = 1;
-    weed_grow2.width = 1;
-    weed_grow2.height = 1;
-    weed_grow3.width = 1;
-    weed_grow3.height = 1;
     weed_dry.width = 1;
     weed_dry.height = 1;
-    weed_texture.width = 1;
-    weed_texture.height = 1;
     cursor1.width = 1;
     cursor1.height = 1;
     cursor2.width = 1;
     cursor2.height = 1;
     cursor_texture.width = 1;
     cursor_texture.height = 1;
-    dirt_texture.width = 1;
-    dirt_texture.height = 1;
     seed_bag_weed1.width = 64;
     seed_bag_weed1.height = 64;
     plant_sound = LoadMultiSound("resources/sounds/plant.mp3");
@@ -80,6 +72,7 @@ void init()
     plant_message_displacement = LoadShader(0, "resources/shaders/warp.fs");
     camera.zoom = 200.f;
     music = LoadMusicStream("resources/sounds/35_Return_Trip.mp3");
+    SetMusicVolume(music, 0.25f);
     PlayMusicStream(music);
     seed = LoadTexture("resources/textures/seed.png");
     seed.width = 128;
@@ -89,12 +82,12 @@ void init()
     weeds = 1000;
     menu = CLOSED;
     upgrade_button = CreateUIElement(1575, 20, 325, 64, "upgrades", upgrades_rec_color, BLACK, NONE);
-    buy_seeds = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 400, 400, 100, "Buy seeds: ", upgrades_rec_color, RED, FARM, 1, 1, "You need to buy seeds\n\n\n else you might go broke", false);
+    buy_seeds = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 375, 400, 100, "Buy seeds: ", upgrades_rec_color, RED, FARM, 0.25f, 5, "You need to buy seeds\n\n\n else you might go broke", false);
     buy_land = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 250, 400, 100, "Buy more land: ", upgrades_rec_color, RED, FARM, 10, 1, "Buy more land for your farm!", false);
-    buy_auto_water = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 100, 400, 100, "Buy automatic watering: ", upgrades_rec_color, RED, FARM, 30, 0, "Buy to automate watering, select and\n\n\n click a plant to attach auto-watering", true);
-    buy_auto_harvest = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 50, 400, 100, "Buy automatic harvesting: ", upgrades_rec_color, RED, FARM, 30, 0, "Buy a harvester to automatically plant\n\n\n and harvest your plants, select and\n\n\n click a plant to attach a harvester", true);
-    buy_value = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 200, 400, 100, "Buy more value: ", upgrades_rec_color, RED, FARM, 30, 1, "Higher quality plants will result in\n\n\n higher profit, select and click a plant\n\n\n to upgrade it's value!", true);
-    buy_time = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 350, 400, 100, "Speed up time: ", upgrades_rec_color, RED, FARM, 100, 1, "Speed up time so your plants grow faster!\n\n\n If sped up too much you won't be\n\n\n able to water in time so be careful!", false);
+    buy_auto_water = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 125, 400, 100, "Buy automatic watering: ", upgrades_rec_color, RED, FARM, 30, 0, "Buy to automate watering, select and\n\n\n click a plant to attach auto-watering", true);
+    buy_auto_harvest = CreateBuyButton(window_width / 2 - 200, window_height / 2, 400, 100, "Buy automatic harvesting: ", upgrades_rec_color, RED, FARM, 30, 0, "Buy a harvester to automatically plant\n\n\n and harvest your plants, select and\n\n\n click a plant to attach a harvester", true);
+    buy_value = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 125, 400, 100, "Buy more value: ", upgrades_rec_color, RED, FARM, 30, 1, "Higher quality plants will result in\n\n\n higher profit, select and click a plant\n\n\n to upgrade it's value!", true);
+    buy_time = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 250, 400, 100, "Speed up time: ", upgrades_rec_color, RED, FARM, 100, 1, "Speed up time so your plants grow faster!\n\n\n If sped up too much you won't be\n\n\n able to water in time so be careful!", false);
 
     SetWindowState(FLAG_WINDOW_MAXIMIZED);
     SetWindowState(FLAG_WINDOW_RESIZABLE);
