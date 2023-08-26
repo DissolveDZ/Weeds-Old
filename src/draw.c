@@ -31,12 +31,19 @@ void draw()
         for (int i = 0; i < grid_y; i++)
         {
             Weed *cur_plant = &weed_array[o][i];
-            if (!cur_plant->watered && cur_plant->planted && !cur_plant->auto_watering)
+            if (!cur_plant->watered && !cur_plant->auto_watering)
                 DrawTextureVI(plant_stages[7], cur_plant->pos, WHITE);
-            if(cur_plant->watered)
+            else if (cur_plant->watered)
                 DrawTextureVI(plant_stages[0], cur_plant->pos, WHITE);
             if (cur_plant->type != DIRT)
                 DrawTextureVI(cur_plant->texture, cur_plant->pos, WHITE);
+        }
+    }
+    for (int o = 0; o < grid_x; o++)
+    {
+        for (int i = 0; i < grid_y; i++)
+        {
+            Weed *cur_plant = &weed_array[o][i];
             if (cur_plant->auto_watering)
             {
                 float width = 0.5f;
@@ -50,7 +57,7 @@ void draw()
             if (cur_plant->warning && cur_plant->planted)
             {
                 float width = 0.5f;
-                DrawTextureEx(warning, (Vector2){(float)cur_plant->pos.x + 1 - width/2, (float)cur_plant->pos.y + 1 - width / 2}, 0, width, WHITE);
+                DrawTextureEx(warning, (Vector2){(float)cur_plant->pos.x + 1 - width / 2, (float)cur_plant->pos.y + 1 - width / 2}, 0, width, WHITE);
             }
         }
     }

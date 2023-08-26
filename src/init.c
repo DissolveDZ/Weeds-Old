@@ -43,7 +43,7 @@ void init()
         plant_stages[i].height = 1;
         plant_stage_len++;
     }
-    free(temp_text);
+    //free(temp_text);
     weed_dry = LoadTexture("resources/textures/weed_dry.png");
     water_bucket = LoadTexture("resources/textures/water_bucket.png");
     shovel = LoadTexture("resources/textures/shovel.png");

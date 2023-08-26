@@ -29,7 +29,7 @@ bool CheckOutOfBounds(Vector2I position, directions direction)
             return false;
     }
 }
-Plant(Vector2I position)
+void Plant(Vector2I position)
 {
     Weed *cur_plant = &weed_array[position.x][position.y];
     if (!cur_plant->planted)
@@ -149,23 +149,26 @@ void ProcessButtons()
     }
     if (buy_land->ui[0]->pressed && Buy(buy_land))
     {
-        if (grid_x <= grid_y)
+        for (int p = 0; p < buy_land->amount; p++)
         {
-            grid_x += 1;
-            weed_array = realloc(weed_array, grid_x * sizeof(Weed *));
-            weed_array[grid_x - 1] = malloc(grid_y * sizeof(Weed));
-            for (int i = 0; i < grid_y; i++)
+            if (grid_x <= grid_y)
             {
-                InitPlant(&weed_array[grid_x - 1][i]);
+                grid_x += 1;
+                weed_array = realloc(weed_array, grid_x * sizeof(Weed *));
+                weed_array[grid_x - 1] = malloc(grid_y * sizeof(Weed));
+                for (int i = 0; i < grid_y; i++)
+                {
+                    InitPlant(&weed_array[grid_x - 1][i]);
+                }
             }
-        }
-        else
-        {
-            grid_y += 1;
-            for (int i = 0; i < grid_x; i++)
+            else
             {
-                weed_array[i] = realloc(weed_array[i], grid_y * sizeof(Weed));
-                InitPlant(&weed_array[i][grid_y - 1]);
+                grid_y += 1;
+                for (int i = 0; i < grid_x; i++)
+                {
+                    weed_array[i] = realloc(weed_array[i], grid_y * sizeof(Weed));
+                    InitPlant(&weed_array[i][grid_y - 1]);
+                }
             }
         }
         UpdatePlants();
@@ -306,6 +309,8 @@ void update()
             cursor_pos.y = 0;
         last_cursor_pos = cursor_pos;
         Weed *cur_weed = &weed_array[cursor_pos.x][cursor_pos.y];
+        if (cur_weed->watered)
+            printf("NO");
         switch (active_selected)
         {
         case AUTOWATER:

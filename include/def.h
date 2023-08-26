@@ -374,6 +374,7 @@ void InitPlant(Weed *weed)
     weed->time = 0;
     weed->last_watered = 0;
     weed->planted = false;
+    weed->watered = false;
     weed->auto_watering = false;
     weed->auto_harvest = false;
     weed->warning = false;
