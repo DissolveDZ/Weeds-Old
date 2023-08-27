@@ -23,8 +23,8 @@ void draw()
         EndTextureMode();
     }
     BeginDrawing();
-    ClearBackground(GREEN);
-    DrawTextureRec(background_texture, (Rectangle){0, 0, window_width, window_height}, (Vector2){0, 0}, WHITE);
+    ClearBackground(WHITE);
+    DrawRectangleGradientV(0, 0, window_width, window_height, (Color){0, 121 - 50, 241 - 100, 255}, (Color){150, 200, 255, 255});
     BeginMode2D(camera);
     for (int o = 0; o < grid_x; o++)
     {
@@ -106,7 +106,11 @@ void draw()
     if (menu != CLOSED && menu != SELECT)
     {
         DrawRectangleRec((Rectangle){0, 0, window_width, window_height}, (Color){0, 0, 0, 125});
-        DrawRectangleRec((Rectangle){100, 100, window_width - 200, window_height - 200}, (Color){65, 65, 65, 125});
+        DrawRectangleRec((Rectangle){400, 125, window_width - 800, window_height - 250}, (Color){65, 65, 65, 125});
+    }
+    if (seeds == 0)
+    {
+        DrawText("Out of seeds!", window_width / 2 - MeasureText("Out of seeds!", 60) / 2, 60, 60.f, RED);
     }
     else if (menu == SELECT)
     {
@@ -142,6 +146,15 @@ void draw()
         DrawRectangleRec(toolrec, GRAY);
         DrawTextEx(pixelfont, tooltip, pos, text_size, 0.f, BLACK);
     }
-    DrawFPS(10, 10);
+    if (global_time < 20)
+    {
+        DrawRectangleGradientV(0, 0, window_width, window_height, fade1, fade2);
+        if (global_time > 1)
+        {
+            fade1.a = Lerp(fade1.a, 0, 0.00002f * frame_time);
+            fade2.a = Lerp(fade2.a, 0, 0.00001f * frame_time);
+        }
+    }
+    // DrawFPS(10, 10);
     EndDrawing();
 }

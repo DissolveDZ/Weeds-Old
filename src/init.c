@@ -119,8 +119,12 @@ void init()
     seed.width = 128;
     seed.height = 64;
     upgrades_rec_color = (Color){127, 106, 79, 125};
+
+    // start with 20 seeds
     seeds = 20;
-    weeds = 1000;
+    // start with 0$
+    weeds = 0;
+    
     menu = CLOSED;
     upgrade_button = CreateUIElement(1575, 20, 325, 64, "upgrades", upgrades_rec_color, BLACK, NONE);
     buy_seeds = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 375, 400, 100, "Buy seeds: ", upgrades_rec_color, RED, FARM, 0.25f, 5, "You need to buy seeds\n\n\n else you might go broke", false);
@@ -129,7 +133,6 @@ void init()
     buy_auto_harvest = CreateBuyButton(window_width / 2 - 200, window_height / 2, 400, 100, "Buy automatic harvesting: ", upgrades_rec_color, RED, FARM, 30, 0, "Buy a harvester to automatically plant\n\n\n and harvest your plants, select and\n\n\n click a plant to attach a harvester", true);
     buy_value = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 125, 400, 100, "Buy more value: ", upgrades_rec_color, RED, FARM, 30, 1, "Higher quality plants will result in\n\n\n higher profit, select and click a plant\n\n\n to upgrade it's value!", true);
     buy_time = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 250, 400, 100, "Speed up time: ", upgrades_rec_color, RED, FARM, 100, 1, "Speed up time so your plants grow faster!\n\n\n If sped up too much you won't be\n\n\n able to water in time so be careful!", false);
-
     SetWindowState(FLAG_WINDOW_MAXIMIZED);
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 

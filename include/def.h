@@ -124,6 +124,8 @@ char *plant_messages[] =
 Text *plant_message_array;
 Color upgrades_rec_color;
 Color cursor_color = WHITE;
+Color fade1 = BLACK;
+Color fade2 = BLACK;
 
 Texture2D cursor1;
 Texture2D cursor2;
@@ -209,6 +211,7 @@ Buy_Button *buy_auto_harvest;
 Buy_Button *buy_value;
 Buy_Button *buy_seeds;
 Buy_Button *buy_time;
+Buy_Button *buy_fertilizer;
 
 int AddUIElement(Rectangle rec, char *text, Color rec_color, Color text_color, Menu menu)
 {
@@ -309,16 +312,15 @@ void FormatUIInt(UI *ui, char *type, int val)
     strcat(ui->display_text, text);
 }
 
-void FormatUIFloat(UI *ui, char *type, int var)
+void FormatUIFloat(UI *ui, char *type, float val)
 {
-    // FormatUI(ui, type);
-    //  strcpy(ui->text, TextFormat(type, var));
+    const char *text = TextFormat(type, val);
+    FormatUI(ui, type, text);
+    strcat(ui->display_text, text);
 }
 
 void Resize()
 {
-    Image VerticalGradient = GenImageGradientLinear(window_width, window_height, -1, (Color){0, 121 - 50, 241 - 100, 255}, (Color){150, 200, 255, 255});
-    background_texture = LoadTextureFromImage(VerticalGradient);
     plant_messages_rendertexture = LoadRenderTexture(window_width, window_height);
     seed_pos = (Vector2){upgrade_button->rec.x - 150, window_height * .035 - seed.height / 4};
     float screenSize[2] = {(float)window_width, (float)window_height};
