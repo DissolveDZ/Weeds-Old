@@ -1,7 +1,10 @@
 # Weeds
-A basic farming game made with the Raylib framework and C!
-It might be kind of buggy since I initially started working on it 2 years ago and patched it up recently but it should work fine for the most part.
-I do NOT own any of the music/sounds used, nor am I profiting from this project.
+## A basic farming game made with the Raylib framework and C! <br>
+### WASD/Arrow keys/Mouse to move. <br>
+### Click or Enter to plant. <br>
+### TAB to open the upgrade menu. <br>
+I do NOT own any of the music/sounds used, nor am I profiting from this project <br> 
+The music is called "Return Trip" and is an OST for the nintendo "engine" called Smile Basic.
 
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/6f7d1fde-e6b7-45f2-86e8-8943a6a55cf7)
 
