@@ -124,6 +124,10 @@ char *plant_messages[] =
 Text *plant_message_array;
 Color upgrades_rec_color;
 Color cursor_color = WHITE;
+
+Color background1 = WHITE;
+Color background2 = WHITE;
+
 Color fade1 = BLACK;
 Color fade2 = BLACK;
 
@@ -136,12 +140,16 @@ Texture2D dirt_dry[3];
 Texture2D warning;
 Texture2D weed_dry;
 Texture2D background_texture;
-Texture2D seed_bag_weed1;
+Texture2D seed_bag;
 Texture2D water_bucket;
 Texture2D shovel;
+Texture2D clock;
+Texture2D money;
+Texture2D plant_glow;
 
 float global_time;
 float day_time;
+float darkness = 0;
 float time_mult = 1.f;
 float decay_speed = 1.f;
 float water_need = 0.25f;
@@ -197,6 +205,7 @@ typedef struct Buy_Button
     unsigned int amount;
     char *tooltip;
     bool select_plant;
+    Texture2D *tex;
 } Buy_Button;
 
 UI *UI_array;
@@ -540,7 +549,7 @@ typedef enum Selectables
 Selectables active_selected;
 
 // Create a Buy button which will be returned as a pointer
-Buy_Button *CreateBuyButton(float x, float y, float width, float height, char *text, Color rec_color, Color text_color, Menu menu, float cost, int amount, char *tooltip, bool select_plant)
+Buy_Button *CreateBuyButton(float x, float y, float width, float height, char *text, Texture2D *texture, Color rec_color, Color text_color, Menu menu, float cost, int amount, char *tooltip, bool select_plant)
 {
     Buy_Button *button = {0};
     if (buy_buttons_len == 0)
@@ -569,17 +578,29 @@ Buy_Button *CreateBuyButton(float x, float y, float width, float height, char *t
     button->amount = amount;
     button->cost = cost;
     button->tooltip = tooltip;
+    button->tex = texture;
     buy_buttons_len++;
     FormatBuyButtons();
     return button;
 }
 
-void DrawAmount()
+void DrawButtonInfo()
 {
     for (int i = 0; i < buy_buttons_len; i++)
     {
         Buy_Button *cur_button = &buy_buttons[i];
-        if ((menu != cur_button->ui[0]->menu) || !cur_button->amount)
+        if (menu != cur_button->ui[0]->menu)
+            continue;
+        if (cur_button->tex != NULL)
+        {
+            cur_button->tex->width = cur_button->ui[0]->rec.height;
+            cur_button->tex->height = cur_button->ui[0]->rec.height;
+            Texture2D tex = *cur_button->tex;
+            DrawTexture(tex, cur_button->ui[0]->rec.x - tex.width - 25, cur_button->ui[0]->rec.y + cur_button->ui[0]->rec.height / 2 - tex.height / 2, WHITE);
+            cur_button->tex->width = 1;
+            cur_button->tex->height = 1;
+        }
+        if (!cur_button->amount)
             continue;
         const char *text = TextFormat("%i", cur_button->amount);
         float text_size = 50.f;

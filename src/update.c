@@ -43,7 +43,7 @@ void Plant(Vector2I position)
             seeds -= 1;
             UpdatePlants();
             PlaySoundMulti(&plant_sound);
-            if (GetRandomValue(1, 20) == 10)
+            if (GetRandomValue(1, 11) == 10)
             {
                 cur_plant_messages_on_screen++;
                 if (cur_plant_messages_on_screen >= max_plant_messages_on_screen - 1)
@@ -52,7 +52,7 @@ void Plant(Vector2I position)
                     plant_message_array = realloc(plant_message_array, sizeof(Text) * max_plant_messages);
                 }
                 plant_message_array[cur_plant_messages_on_screen - 1].position = ((Vector2){GetRandomValue(0, window_width), GetRandomValue(0, window_height)});
-                plant_message_array[cur_plant_messages_on_screen - 1].random = GetRandomValue(0, 9 - 1);
+                plant_message_array[cur_plant_messages_on_screen - 1].random = GetRandomValue(0, 10 - 1);
                 plant_message_array[cur_plant_messages_on_screen - 1].velocity.y = GetRandomValue(1, 50);
                 plant_message_array[cur_plant_messages_on_screen - 1].size = GetRandomValue(20, 60);
                 plant_message_array[cur_plant_messages_on_screen - 1].lifetime = 0;
@@ -142,10 +142,7 @@ void ProcessButtons()
     }
     if (buy_time->ui[0]->pressed && Buy(buy_time))
     {
-        for (int i = 0; i < buy_time->amount; i++)
-        {
-            time_mult *= 1.25f;
-        }
+        time_mult += 0.5f * buy_time->amount;
         printf("time mult: %f\n", time_mult);
     }
     if (buy_land->ui[0]->pressed && Buy(buy_land))
@@ -183,6 +180,12 @@ void update()
     UpdateUI();
     UpdateBuyButtons();
     ProcessButtons();
+    if (IsKeyPressed(KEY_F11))
+    {
+        int monitor = GetCurrentMonitor();
+        ToggleFullscreen();
+        SetWindowSize(GetMonitorWidth(monitor), GetMonitorHeight(monitor));
+    }
     if (IsWindowResized())
     {
         int old_width = window_width;
@@ -262,11 +265,6 @@ void update()
             if (last_cursor_pos.x == cursor_pos.x && last_cursor_pos.y == cursor_pos.y)
                 Plant(cursor_pos);
             last_cursor_pos = cursor_pos;
-        }
-
-        if (IsKeyPressed(KEY_F11))
-        {
-            ToggleFullscreen();
         }
         if (IsKeyPressed(KEY_ENTER))
         {

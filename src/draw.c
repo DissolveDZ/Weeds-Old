@@ -22,9 +22,41 @@ void draw()
         DrawRectangleRec((Rectangle){0, 0, (float)plant_messages_rendertexture.texture.width, (float)-plant_messages_rendertexture.texture.height}, WHITE);
         EndTextureMode();
     }
+    float time_adjusted = day_time * 24 / 120 + 1;
+    int oclock = (int)time_adjusted;
+    if (oclock > 24)
+    {
+        day_time = 24 / 120;
+        day++;
+    }
+    if (menu == CLOSED)
+    {
+        if (oclock < 12)
+        {
+            darkness = Lerp(darkness, (float)time_adjusted / 12, 1.f * frame_time * time_mult);
+        }
+        else
+            darkness = Lerp(darkness, 1 - 1 * ((float)time_adjusted - 12) / 12, 1.f * frame_time * time_mult);
+        darkness = Clamp(darkness, 0, 1);
+    }
+    unsigned int day_times = 4;
+    for (int steps = 0; steps < day_times; steps++)
+    {
+        int cur_step = darkness / day_times * steps;
+        switch (cur_step)
+        {
+        }
+    }
+    Vector3 day_color_mult = {Clamp(darkness + (1 - darkness) * 0.2f, 0, 1), Clamp(darkness + (1 - darkness) * 0.2f, 0, 1), Clamp(darkness + (1 - darkness) * 0.4f, 0, 1)};
+    background1 = (Color){0, (121 - 50) * day_color_mult.y, (241 - 100) * day_color_mult.z, 255};
+    background2 = (Color){150 * day_color_mult.x, 200 * day_color_mult.y, 255 * day_color_mult.z, 255};
     BeginDrawing();
     ClearBackground(WHITE);
-    DrawRectangleGradientV(0, 0, window_width, window_height, (Color){0, 121 - 50, 241 - 100, 255}, (Color){150, 200, 255, 255});
+    // printf("before: %f", background1.r);
+    // Vector2Clamp((Vector2){background1.r, background1.g}, Vector2Zero(), (Vector2){255, 255});
+    // Vector2Clamp((Vector2){background1.b, background1.a}, Vector2Zero(), (Vector2){255, 255});
+    // printf("after: %f", background1.r);
+    DrawRectangleGradientV(0, 0, window_width, window_height, background1, background2);
     BeginMode2D(camera);
     for (int o = 0; o < grid_x; o++)
     {
@@ -44,6 +76,9 @@ void draw()
                 DrawTextureVI(dirt[sides], cur_plant->pos, WHITE);
             else
                 DrawTextureVI(dirt_dry[sides], cur_plant->pos, WHITE);
+
+            if (cur_plant->type == GROWN)
+                DrawTextureV(plant_glow, (Vector2){cur_plant->pos.x - 0.5f, cur_plant->pos.y - 0.5f}, WHITE);
 
             if (cur_plant->planted)
                 DrawTextureVI(cur_plant->texture, cur_plant->pos, WHITE);
@@ -118,15 +153,10 @@ void draw()
     }
 
     RenderUI();
-    DrawAmount();
+    DrawButtonInfo();
     DrawTextEx(pixelfont, TextFormat("money: %i$ ", display_weeds), (Vector2){20, window_height * .035}, 50, 0.0f, BLACK);
     DrawTextEx(pixelfont, TextFormat("%i: ", seeds), (Vector2){window_width - upgrade_button->rec.width - 100 - MeasureTextEx(pixelfont, TextFormat("%i: ", seeds), 50, 0.f).x, window_height * .035}, 50, 0.f, BLACK);
-    int oclock = (int){day_time * 24 / 120 + 1};
-    if (oclock > 24)
-    {
-        day_time = 24 / 120;
-        day++;
-    }
+
     DrawTextEx(pixelfont, TextFormat("day: %i time: %i", day, oclock), (Vector2){window_width / 2 - GetTextMiddle(TextFormat("day: %i time: %i", day, oclock), 40, pixelfont, 3), 20}, 40, 3, BLACK);
 
     Rectangle toolrec = {0};
