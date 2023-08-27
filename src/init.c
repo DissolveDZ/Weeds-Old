@@ -88,8 +88,8 @@ void init()
     clock = LoadTexture("resources/textures/clock.png");
     money = LoadTexture("resources/textures/money.png");
     plant_glow = LoadTexture("resources/textures/glow.png");
-    plant_glow.width = 2;
-    plant_glow.height = 2;
+    plant_glow.width = 4;
+    plant_glow.height = 4;
     warning.width = 1;
     warning.height = 1;
     water_bucket.width = 1;

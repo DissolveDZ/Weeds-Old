@@ -64,6 +64,7 @@ void Plant(Vector2I position)
     {
         if (cur_plant->type == GROWN && cur_plant->watered)
         {
+            cur_plant->type = 0;
             cur_plant->planted = false;
             cur_plant->watered = false;
             PlaySoundMulti(&dig_sound);

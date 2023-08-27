@@ -76,12 +76,6 @@ void draw()
                 DrawTextureVI(dirt[sides], cur_plant->pos, WHITE);
             else
                 DrawTextureVI(dirt_dry[sides], cur_plant->pos, WHITE);
-
-            if (cur_plant->type == GROWN)
-                DrawTextureV(plant_glow, (Vector2){cur_plant->pos.x - 0.5f, cur_plant->pos.y - 0.5f}, WHITE);
-
-            if (cur_plant->planted)
-                DrawTextureVI(cur_plant->texture, cur_plant->pos, WHITE);
         }
     }
 
@@ -90,6 +84,10 @@ void draw()
         for (int i = 0; i < grid_y; i++)
         {
             Weed *cur_plant = &weed_array[o][i];
+            if (cur_plant->type == GROWN)
+                DrawTextureV(plant_glow, (Vector2){cur_plant->pos.x - plant_glow.width / 2 + 0.5f, cur_plant->pos.y - plant_glow.height / 2 + 0.5f}, WHITE);
+            if (cur_plant->planted)
+                DrawTextureVI(cur_plant->texture, cur_plant->pos, WHITE);
             if (cur_plant->auto_watering)
             {
                 float width = 0.5f;

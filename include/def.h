@@ -392,6 +392,7 @@ void InitPlant(Weed *weed)
     weed->watered = false;
     weed->warning = false;
     weed->value = 1;
+    weed->type = 0;
 }
 
 Buy_Button *buy_buttons;
