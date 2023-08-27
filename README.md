@@ -11,13 +11,3 @@ I do NOT own any of the music/sounds used, nor am I profiting from this project.
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/9f780cea-88d8-40b8-b8db-34ed4a069149)
 
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/d59d0d9a-8939-45ed-9899-38f35da0102a)
-
-![image](https://github.com/DissolveDZ/Weeds/assets/68782699/a8f9847e-0464-4ece-bff5-4f22556ef703)
-
-![image](https://github.com/DissolveDZ/Weeds/assets/68782699/49f1f4ac-2dce-4aed-8a46-eba0d0cf9306)
-
-
-![image](https://github.com/DissolveDZ/Weeds/assets/68782699/b151166a-ed8f-4058-ad1a-d8876da4817d)
-
-
-![image](https://github.com/DissolveDZ/Weeds/assets/68782699/f581e500-f467-4f7c-bf21-f3a4472a0270)
