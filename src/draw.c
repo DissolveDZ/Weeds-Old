@@ -81,7 +81,7 @@ void draw()
             {
                 Weed *cur_plant = &weed_array[o][i];
                 const char *text = TextFormat("%i", cur_plant->value);
-                float text_size = 0.75f;
+                float text_size = 0.5f;
                 Vector2 text_offset = MeasureTextEx(pixelfont, text, text_size, 0.f);
                 while (text_offset.x > 1)
                 {
@@ -146,15 +146,10 @@ void draw()
         DrawRectangleRec(toolrec, GRAY);
         DrawTextEx(pixelfont, tooltip, pos, text_size, 0.f, BLACK);
     }
-    if (global_time < 20)
-    {
-        DrawRectangleGradientV(0, 0, window_width, window_height, fade1, fade2);
-        if (global_time > 1)
-        {
-            fade1.a = Lerp(fade1.a, 0, 0.00002f * frame_time);
-            fade2.a = Lerp(fade2.a, 0, 0.00001f * frame_time);
-        }
-    }
+    DrawRectangleGradientV(0, 0, window_width, window_height, fade1, fade2);
+    fade1.a = Lerp(fade1.a, 0, 0.00002f * frame_time);
+    fade2.a = Lerp(fade2.a, 0, 0.00001f * frame_time);
+
     // DrawFPS(10, 10);
     EndDrawing();
 }
