@@ -6,7 +6,7 @@
 ### WASD/Arrow keys/Mouse to move. <br>
 ### Click or Enter to plant. <br>
 ### TAB to open the upgrade menu. <br>
-I might be porting this to my own 2D engine soon since Raylib is very limiting and falls apart when doing more complex part like implementing a custom rendering pipeline <br> 
+I might be porting this to my own 2D engine soon since Raylib is very limiting and falls apart when doing more complex stuff like implementing a custom rendering pipeline <br> 
 I do NOT own any of the music/sounds used, nor am I profiting from this project <br> 
 The music is called "Return Trip" and is an OST for the Nintendo DS "engine" called Smile Basic.
 
