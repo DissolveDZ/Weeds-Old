@@ -1,8 +1,13 @@
 void init()
 {
-    max_weeds = grid_x * grid_y;
     InitAudioDevice();
     InitWindow(window_width, window_height, Game_Name);
+    SetWindowState(FLAG_WINDOW_MAXIMIZED);
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
+    SetWindowState(FLAG_VSYNC_HINT);
+    SetWindowState(FLAG_MSAA_4X_HINT);
+    SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
+    max_weeds = grid_x * grid_y;
     rander = GetRandomValue(0, 6);
     switch (rander)
     {
@@ -137,10 +142,7 @@ void init()
     buy_auto_harvest = CreateBuyButton(window_width / 2 - 200, window_height / 2, 400, 100, "Buy automatic harvesting: ", &shovel, upgrades_rec_color, RED, FARM, 30, 0, "Buy a harvester to automatically plant\n\n\n and harvest your plants, select and\n\n\n click a plant to attach a harvester", true);
     buy_value = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 125, 400, 100, "Buy more value: ", &cash, upgrades_rec_color, RED, FARM, 30, 1, "Higher quality plants will result in\n\n\n higher profit, select and click a plant\n\n\n to upgrade it's value!", true);
     buy_time = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 250, 400, 100, "Speed up time: ", &clock, upgrades_rec_color, RED, FARM, 100, 1, "Speed up time so your plants grow faster!\n\n\n If sped up too much you won't be\n\n\n able to water in time so be careful!", false);
-    SetWindowState(FLAG_WINDOW_MAXIMIZED);
-    SetWindowState(FLAG_WINDOW_RESIZABLE);
 
-    SetTargetFPS(60);
     weed_array = malloc(grid_x * sizeof(Weed *));
     for (int o = 0; o < grid_x; o++)
     {
