@@ -8,7 +8,7 @@
 ### TAB to open the upgrade menu. <br>
 I might be porting this to my own 2D engine soon since Raylib is very limiting and falls apart when doing more complex part like implementing a custom rendering pipeline <br> 
 I do NOT own any of the music/sounds used, nor am I profiting from this project <br> 
-The music is called "Return Trip" and is an OST for the nintendo "engine" called Smile Basic.
+The music is called "Return Trip" and is an OST for the Nintendo DS "engine" called Smile Basic.
 
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/a03d79f7-fc8f-4843-9cec-7b0ea6269655)
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/66ff69f9-ced5-4cb1-ab77-9ba8b74d099b)
