@@ -10,12 +10,9 @@ I'm sorry i used raylib, might be porting this to my own 2D engine soon <br>
 I do NOT own any of the music/sounds used, nor am I profiting from this project <br> 
 The music is called "Return Trip" and is an OST for the nintendo "engine" called Smile Basic.
 
-![image](https://github.com/DissolveDZ/Weeds/assets/68782699/6f7d1fde-e6b7-45f2-86e8-8943a6a55cf7)
-
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/a03d79f7-fc8f-4843-9cec-7b0ea6269655)
+![image](https://github.com/DissolveDZ/Weeds/assets/68782699/66ff69f9-ced5-4cb1-ab77-9ba8b74d099b)
 
-
-![image](https://github.com/DissolveDZ/Weeds/assets/68782699/386068ba-f28e-4fdd-bf9b-43a4defb26f2)
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/3c0368a2-5118-4f75-a1b0-025bd5b7a523)
 
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/e8fa876f-3916-4daa-9312-24d97a0f2036)
