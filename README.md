@@ -12,6 +12,8 @@ The music is called "Return Trip" and is an OST for the nintendo "engine" called
 
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/6f7d1fde-e6b7-45f2-86e8-8943a6a55cf7)
 
+![image](https://github.com/DissolveDZ/Weeds/assets/68782699/a03d79f7-fc8f-4843-9cec-7b0ea6269655)
+
 
 ![image](https://github.com/DissolveDZ/Weeds/assets/68782699/386068ba-f28e-4fdd-bf9b-43a4defb26f2)
 
