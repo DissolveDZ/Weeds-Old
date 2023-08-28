@@ -62,7 +62,7 @@ void Plant(Vector2I position)
     }
     else
     {
-        if (cur_plant->type == GROWN && cur_plant->watered)
+        if (cur_plant->type == GROWN)
         {
             cur_plant->type = 0;
             cur_plant->planted = false;

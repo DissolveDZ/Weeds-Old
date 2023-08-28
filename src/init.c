@@ -128,7 +128,7 @@ void init()
     // start with 20 seeds
     seeds = 20;
     // start with 0$
-    weeds = 0;
+    weeds = 1000;
 
     day_time = 45;
 
