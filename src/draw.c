@@ -52,10 +52,6 @@ void draw()
     background2 = (Color){150 * day_color_mult.x, 200 * day_color_mult.y, 255 * day_color_mult.z, 255};
     BeginDrawing();
     ClearBackground(WHITE);
-    // printf("before: %f", background1.r);
-    // Vector2Clamp((Vector2){background1.r, background1.g}, Vector2Zero(), (Vector2){255, 255});
-    // Vector2Clamp((Vector2){background1.b, background1.a}, Vector2Zero(), (Vector2){255, 255});
-    // printf("after: %f", background1.r);
     DrawRectangleGradientV(0, 0, window_width, window_height, background1, background2);
     BeginMode2D(camera);
     for (int o = 0; o < grid_x; o++)
