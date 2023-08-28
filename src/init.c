@@ -46,47 +46,46 @@ void init()
     free(temp_text);
     for (int i = 0; i < 3; i++)
     {
-        char *textes;
+        char *temp_chars;
         switch (i)
         {
         case 0:
-            textes = "resources/textures/dirt.png";
+            temp_chars = "resources/textures/dirt.png";
             break;
         case 1:
-            textes = "resources/textures/dirt_left.png";
+            temp_chars = "resources/textures/dirt_left.png";
             break;
         case 2:
-            textes = "resources/textures/dirt_right.png";
+            temp_chars = "resources/textures/dirt_right.png";
         }
-        dirt[i] = LoadTexture(textes);
+        dirt[i] = LoadTexture(temp_chars);
         dirt[i].width = 1;
         dirt[i].height = 1;
         printf("%u\n", dirt[i]);
     }
     for (int i = 0; i < 3; i++)
     {
-        char *textes;
+        char *temp_chars;
         switch (i)
         {
         case 0:
-            textes = "resources/textures/dirt_dry.png";
+            temp_chars = "resources/textures/dirt_dry.png";
             break;
         case 1:
-            textes = "resources/textures/dirt_dry_left.png";
+            temp_chars = "resources/textures/dirt_dry_left.png";
             break;
         case 2:
-            textes = "resources/textures/dirt_dry_right.png";
+            temp_chars = "resources/textures/dirt_dry_right.png";
         }
-        dirt_dry[i] = LoadTexture(textes);
+        dirt_dry[i] = LoadTexture(temp_chars);
         dirt_dry[i].width = 1;
         dirt_dry[i].height = 1;
     }
-    weed_dry = LoadTexture("resources/textures/weed_dry.png");
     water_bucket = LoadTexture("resources/textures/water_bucket.png");
     shovel = LoadTexture("resources/textures/shovel.png");
     warning = LoadTexture("resources/textures/warning.png");
     clock = LoadTexture("resources/textures/clock.png");
-    money = LoadTexture("resources/textures/money.png");
+    cash = LoadTexture("resources/textures/money.png");
     plant_glow = LoadTexture("resources/textures/glow.png");
     plant_glow.width = 4;
     plant_glow.height = 4;
@@ -96,8 +95,6 @@ void init()
     water_bucket.height = 1;
     shovel.width = 1;
     shovel.height = 1;
-    weed_dry.width = 1;
-    weed_dry.height = 1;
     cursor1.width = 1;
     cursor1.height = 1;
     cursor2.width = 1;
@@ -128,7 +125,7 @@ void init()
     // start with 20 seeds
     seeds = 20;
     // start with 0$
-    weeds = 1000;
+    money = 0;
 
     day_time = 45;
 
@@ -138,12 +135,12 @@ void init()
     buy_land = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 250, 400, 100, "Buy more land: ", &dirt_dry[0], upgrades_rec_color, RED, FARM, 10, 1, "Buy more land for your farm!", false);
     buy_auto_water = CreateBuyButton(window_width / 2 - 200, window_height / 2 - 125, 400, 100, "Buy automatic watering: ", &water_bucket, upgrades_rec_color, RED, FARM, 30, 0, "Buy to automate watering, select and\n\n\n click a plant to attach auto-watering", true);
     buy_auto_harvest = CreateBuyButton(window_width / 2 - 200, window_height / 2, 400, 100, "Buy automatic harvesting: ", &shovel, upgrades_rec_color, RED, FARM, 30, 0, "Buy a harvester to automatically plant\n\n\n and harvest your plants, select and\n\n\n click a plant to attach a harvester", true);
-    buy_value = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 125, 400, 100, "Buy more value: ", &money, upgrades_rec_color, RED, FARM, 30, 1, "Higher quality plants will result in\n\n\n higher profit, select and click a plant\n\n\n to upgrade it's value!", true);
+    buy_value = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 125, 400, 100, "Buy more value: ", &cash, upgrades_rec_color, RED, FARM, 30, 1, "Higher quality plants will result in\n\n\n higher profit, select and click a plant\n\n\n to upgrade it's value!", true);
     buy_time = CreateBuyButton(window_width / 2 - 200, window_height / 2 + 250, 400, 100, "Speed up time: ", &clock, upgrades_rec_color, RED, FARM, 100, 1, "Speed up time so your plants grow faster!\n\n\n If sped up too much you won't be\n\n\n able to water in time so be careful!", false);
     SetWindowState(FLAG_WINDOW_MAXIMIZED);
     SetWindowState(FLAG_WINDOW_RESIZABLE);
 
-    SetTargetFPS(144);
+    SetTargetFPS(60);
     weed_array = malloc(grid_x * sizeof(Weed *));
     for (int o = 0; o < grid_x; o++)
     {

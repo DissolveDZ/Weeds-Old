@@ -69,7 +69,7 @@ void Plant(Vector2I position)
             cur_plant->watered = false;
             PlaySoundMulti(&dig_sound);
             UpdatePlants();
-            weeds += cur_plant->value;
+            money += cur_plant->value;
         }
         else if (!cur_plant->watered)
         {
@@ -82,11 +82,13 @@ void Plant(Vector2I position)
 
 void MoneyAnimation()
 {
-    // display_weeds = (int)Lerp((float)display_weeds, (float)weeds, 0.1f);
+    display_weeds = (int)Lerp((float)display_weeds, (float)money, 5.0f * frame_time);
+    /*
     if (display_weeds < weeds)
-        display_weeds += 1; //(int)(10.f * frame_time);
+        display_weeds += (int){10.f * frame_time}; //(int)(10.f * frame_time);
     else if (display_weeds > weeds)
-        display_weeds -= 1; //(int)(10.f * frame_time);
+        display_weeds -= (int){10.f * frame_time}; //(int)(10.f * frame_time);
+    */
     // display_weeds = weeds;
 }
 

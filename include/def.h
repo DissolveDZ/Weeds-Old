@@ -138,13 +138,12 @@ Texture2D plant_stages[6];
 Texture2D dirt[3];
 Texture2D dirt_dry[3];
 Texture2D warning;
-Texture2D weed_dry;
 Texture2D background_texture;
 Texture2D seed_bag;
 Texture2D water_bucket;
 Texture2D shovel;
 Texture2D clock;
-Texture2D money;
+Texture2D cash;
 Texture2D plant_glow;
 
 float global_time;
@@ -155,14 +154,12 @@ float decay_speed = 1.f;
 float water_need = 0.25f;
 
 Music music;
-Model weed_model;
-
 int max_weeds;
 int seeds = 1000;
 unsigned int day = 0;
 unsigned int grid_x = 3;
 unsigned int grid_y = 1;
-unsigned int weeds = 0;
+unsigned int money = 0;
 unsigned int display_weeds = 0;
 Camera2D camera = {0};
 
@@ -495,7 +492,7 @@ void UpdateBuyButtons()
     {
         Buy_Button *cur_button = &buy_buttons[i];
         int amount = cur_button->amount ? cur_button->amount : 1;
-        if (cur_button->cost * amount <= weeds && 1 <= floorf(cur_button->cost * amount))
+        if (cur_button->cost * amount <= money && 1 <= floorf(cur_button->cost * amount))
         {
             cur_button->ui[0]->text_color = BLACK;
             if (cur_button->amount)
@@ -529,10 +526,10 @@ void UpdateBuyButtons()
 bool Buy(Buy_Button *button)
 {
     int amount = button->amount ? button->amount : 1;
-    if (weeds >= button->cost * amount && 1 <= floorf(button->cost * amount))
+    if (money >= button->cost * amount && 1 <= floorf(button->cost * amount))
     {
         PlaySoundMulti(&cash_sound);
-        weeds -= button->cost * amount;
+        money -= button->cost * amount;
         // button->cost += button->cost / 2;
         // button->cost *= 1.25f;
         FormatBuyButtons();
@@ -674,7 +671,7 @@ void UpdatePlants()
                 cur_plant->type = PLANTED;
                 cur_plant->planted = false;
                 cur_plant->watered = false;
-                weeds += cur_plant->value;
+                money += cur_plant->value;
             }
             if (!cur_plant->planted)
             {
