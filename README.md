@@ -1,5 +1,5 @@
 # Weeds
-## A basic farming game made with the Raylib framework and C! <br>
+## A farming game made with the Raylib framework and C! <br>
 
 ### Weeds have attacked your farm, making it hard to sustain it, <br> by upgrading your farm might manage to survive!
 
