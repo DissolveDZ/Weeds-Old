@@ -1,7 +1,7 @@
 # Weeds
 ## A farming game made with the Raylib framework and C! <br>
 
-### Weeds have attacked your farm, making it hard to sustain it, <br> by upgrading your farm might manage to survive!
+### Weeds have attacked your farm, making it hard to sustain it, <br> by upgrading your farm you might manage to survive!
 
 ### WASD/Arrow keys/Mouse to move. <br>
 ### Click or Enter to plant. <br>
